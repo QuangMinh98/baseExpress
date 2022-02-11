@@ -1,7 +1,7 @@
 import express from 'express';
 import { config } from './config/config';
-import { ControllerFactory } from './controllers';
 import { errorMiddleware, Controller } from './common';
+import { initRouter } from './routes/api';
 
 export class App {
     private app: express.Application;
@@ -9,18 +9,15 @@ export class App {
     constructor() {
         this.app = express();
         this.connectDatabase();
-        this.initRouter([ControllerFactory.get('App')]);
+        this.initRouter();
     }
 
     private async connectDatabase() {}
 
-    private initRouter(controllers?: Controller[]): void {
-        if (controllers && controllers.length > 0) {
-            this.app.use(
-                '/api',
-                controllers.map((controller) => controller.router)
-            );
-        }
+    private logger() {}
+
+    private initRouter(): void {
+        initRouter(this.app);
         this.initializeErrorHandling();
     }
 
