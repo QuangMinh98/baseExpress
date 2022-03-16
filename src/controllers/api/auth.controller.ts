@@ -20,7 +20,7 @@ export class AuthController implements Controller {
         this._router.post(this.baseUrl, this.login);
     }
 
-    async login(req:Request, res:Response) {
+    async login(req: Request, res: Response) {
         const { email, password } = req.body;
         return await AuthService.login(email, password, res);
     }

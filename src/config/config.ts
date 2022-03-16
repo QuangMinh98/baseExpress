@@ -9,7 +9,7 @@ export class Config {
         this.envConfig = {
             port: process.env.PORT,
             connectionString: process.env.CONNECTION_STRING,
-            jwtKey: process.env.JWT_KEY
+            jwtKey: process.env.JWT_KEY,
         };
     }
 
