@@ -7,7 +7,9 @@ export class Config {
     constructor() {
         dotenv.config();
         this.envConfig = {
-            port: process.env.PORT
+            port: process.env.PORT,
+            connectionString: process.env.CONNECTION_STRING,
+            jwtKey: process.env.JWT_KEY
         };
     }
 

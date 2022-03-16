@@ -2,15 +2,24 @@ import express from 'express';
 import { config } from './config/config';
 import { errorMiddleware, Controller } from './common';
 import { initRouter } from './routes/api';
+import { connectDatabase } from './database/mongodb';
 
 export class App {
     private app: express.Application;
 
     constructor() {
         this.app = express();
+        this.app.use(express.json());
+        this.app.use(
+            express.urlencoded({
+                extended: true
+            })
+        );
     }
 
-    private async connectDatabase() {}
+    private async connectDatabase() {
+        await connectDatabase();
+    }
 
     private logger() {}
 
