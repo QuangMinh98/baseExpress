@@ -8,13 +8,13 @@ export class App {
 
     constructor() {
         this.app = express();
-        this.connectDatabase();
-        this.initRouter();
     }
 
     private async connectDatabase() {}
 
     private logger() {}
+
+    private cronJob() {}
 
     private initRouter(): void {
         initRouter(this.app);
@@ -23,6 +23,12 @@ export class App {
 
     private initializeErrorHandling() {
         this.app.use(errorMiddleware);
+    }
+
+    async start() {
+        await this.connectDatabase();
+        this.cronJob();
+        this.initRouter();
     }
 
     async listen(port: number, callback?: () => void): Promise<void> {

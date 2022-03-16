@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import { AppService } from '../services/app.service';
-import { Controller } from '../common';
+import { AppService } from '../../services/app.service';
+import { Controller } from '../../common';
 
 export class AppController implements Controller {
     private readonly baseUrl: string = '/';
