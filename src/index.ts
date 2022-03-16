@@ -6,7 +6,7 @@ async function Main() {
     const port: number = config.get('port') || 3000;
 
     await app.start();
-    app.listen(port, () => {
+    await app.listen(port, () => {
         console.log('listening on port', port);
     });
 }
