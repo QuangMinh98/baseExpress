@@ -1,5 +1,6 @@
 import { User } from '../models/user.models';
 import { Request, Response } from 'express';
+import Joi from 'joi';
 import { HttpException } from '../common';
 import bcrypt from 'bcrypt';
 import { pick } from 'lodash';
@@ -15,6 +16,9 @@ class AuthService {
     }
 
     static async login(email: string, password: string, res: Response) {
+        // const { error } = AuthService.validate(email);
+        // if (error) throw new HttpException(400, { error_code: "01", error_message: error.details[0].message });
+
         const user = await User.findOne({ email });
         if (!user) throw new HttpException(400, { error_code: '400', error_message: 'Invalid email or password' });
 
@@ -28,6 +32,20 @@ class AuthService {
         const token = user.generateToken();
         res.header('x-auth-token', token).send(response);
     }
+
+    /**
+     * Function to validate login info
+     *
+     * @param user login info
+     * @returns
+     */
+    //  static validate(user:email,password): Joi.ValidationResult{
+    //     const schema =Joi.object().keys({
+    //         email: Joi.string().email().required(),
+    //         password: Joi.string().min(6).max(50).required()
+    //     });
+    //     return schema.validate(user)
+    // }
 }
 
 export { AuthService };
