@@ -16,14 +16,15 @@ class AuthService {
     }
 
     static async login(email: string, password: string, res: Response) {
-        // const { error } = AuthService.validate(email);
-        // if (error) throw new HttpException(400, { error_code: "01", error_message: error.details[0].message });
+        // Validate login data
+        const { error } = AuthService.validate({ email, password });
+        if (error) throw new HttpException(400, { error_code: '01', error_message: error.details[0].message });
 
         const user = await User.findOne({ email });
         if (!user) throw new HttpException(400, { error_code: '400', error_message: 'Invalid email or password' });
 
         const isValid = await bcrypt.compare(password, user.password);
-        if (!isValid) throw new HttpException(400, { error_code: 1, error_message: 'Invalid email or password' });
+        if (!isValid) throw new HttpException(400, { error_code: '400', error_message: 'Invalid email or password' });
 
         const response = {
             user: pick(user, ['_id', 'name', 'email'])
@@ -39,13 +40,13 @@ class AuthService {
      * @param user login info
      * @returns
      */
-    //  static validate(user:email,password): Joi.ValidationResult{
-    //     const schema =Joi.object().keys({
-    //         email: Joi.string().email().required(),
-    //         password: Joi.string().min(6).max(50).required()
-    //     });
-    //     return schema.validate(user)
-    // }
+    static validate(loginData: { email: string; password: string }): Joi.ValidationResult {
+        const schema = Joi.object().keys({
+            email: Joi.string().email().required(),
+            password: Joi.string().min(6).max(50).required()
+        });
+        return schema.validate(loginData);
+    }
 }
 
 export { AuthService };
