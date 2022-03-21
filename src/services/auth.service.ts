@@ -4,6 +4,7 @@ import Joi from 'joi';
 import { HttpException } from '../common';
 import bcrypt from 'bcrypt';
 import { pick } from 'lodash';
+import passport from 'passport';
 
 export class AuthService {
     private static instance: AuthService;
@@ -15,7 +16,7 @@ export class AuthService {
         return AuthService.instance;
     }
 
-    static async login(email: string, password: string, res: Response) {
+     async login(email: string, password: string, res: Response) {
         // Validate login data\
         const { error } = AuthService.validate({ email, password });
         if (error) throw new HttpException(400, { error_code: '01', error_message: error.details[0].message });
@@ -39,7 +40,7 @@ export class AuthService {
      * @param {*} user
      * @return
      */
-    static async facebookLogin(user: any, res: Response) {
+     async facebookLogin(user: any, res: Response) {
         const loginFacebook = await User.findOne(user._id);
         if (!loginFacebook) throw new HttpException(404, { error_code: '01', error_message: 'User not found' });
 
