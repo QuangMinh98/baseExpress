@@ -99,7 +99,7 @@ const UserSchema = new Schema({
     }
 });
 
-UserSchema.methods.generateToken = function () {
+UserSchema.methods.generateToken = function (): string {
     const data = {
         _id: this._id,
         admin: this.admin,

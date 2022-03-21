@@ -21,5 +21,5 @@ export interface IFUser extends Document {
     otp: string;
     groups: Schema.Types.ObjectId[];
     generateToken(): string;
-    hashPassword(): void;
+    hashPassword(): string;
 }
