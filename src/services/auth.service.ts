@@ -4,7 +4,6 @@ import Joi from 'joi';
 import { HttpException } from '../common';
 import bcrypt from 'bcrypt';
 import { pick } from 'lodash';
-import passport from 'passport';
 
 export class AuthService {
     private static instance: AuthService;
@@ -43,6 +42,22 @@ export class AuthService {
      async facebookLogin(user: any, res: Response) {
         const loginFacebook = await User.findOne(user._id);
         if (!loginFacebook) throw new HttpException(404, { error_code: '01', error_message: 'User not found' });
+
+        const token = user.generateToken();
+        const response = {
+            user:pick(user, ['email', 'name', 'authType'])
+        }
+        res.header('x-auth-token', token).send(response);
+    }
+
+    /**
+     * Function login data with Google
+     * @param {*} user
+     * @return
+     */
+     async googleLogin(user: any, res: Response) {
+        const loginGoogle = await User.findOne(user._id);
+        if (!loginGoogle) throw new HttpException(404, { error_code: '01', error_message: 'User not found' });
 
         const token = user.generateToken();
         const response = {

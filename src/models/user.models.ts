@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     },
     phoneNumber: {
         type: Number,
-        required: true
+        // required: true
     },
     address: {
         type: String,
@@ -26,7 +26,7 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
         minlength: 6,
         maxlength: 255
     },

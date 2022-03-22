@@ -2,7 +2,7 @@ import { Response, Request, Router, NextFunction } from 'express';
 import { Controller } from '../../common';
 import { AuthService } from '../../services/auth.service';
 import passport from 'passport';
-require('../../middlewares/passports');
+require('../../middlewares/passport');
 
 export class AuthController implements Controller {
     private readonly baseUrl: string = '/login';
@@ -22,18 +22,13 @@ export class AuthController implements Controller {
         this._router.post(this.baseUrl, this.login);
         this._router.post(
             this.baseUrl + '/facebook',
-            passport.authenticate('facebook', { session: false }),
+            passport.authenticate('facebook-token', { session: false }),
             this.facebookLogin
         );
-        this._router.get(
-            this.baseUrl + '/facebook',
-            passport.authenticate('facebook', { session: false }),
-            this.facebookLogin
-        );
-        this._router.get(
-            '/facebook/callback',
-            passport.authenticate('facebook', { failureRedirect: '/failed' }),
-            this.facebookLoginCallback
+        this._router.post(
+            this.baseUrl + '/google',
+            passport.authenticate('google-plus-token', { session: false }),
+            this.googleLogin
         );
     }
 
@@ -57,9 +52,11 @@ export class AuthController implements Controller {
         }
     };
 
-    private facebookLoginCallback = async (req: Request, res: Response, next: NextFunction) => {
+    private googleLogin = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            res.redirect('/profile');
+            const { user } = req;
+
+            return await this.authService.googleLogin(user, res);
         } catch (err) {
             next(err);
         }
