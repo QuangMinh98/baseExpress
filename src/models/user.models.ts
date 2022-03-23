@@ -8,17 +8,14 @@ import Joi from 'Joi';
 const UserSchema = new Schema({
     name: {
         type: String,
-        required: true,
         minlength: 6,
         maxlength: 50
     },
     email: {
-        type: String,
-        required: true
+        type: String
     },
     phoneNumber: {
-        type: Number,
-        required: true
+        type: Number
     },
     address: {
         type: String,
@@ -26,7 +23,6 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
         minlength: 6,
         maxlength: 255
     },

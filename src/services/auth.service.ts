@@ -1,10 +1,9 @@
 import { User } from '../models/user.models';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import Joi from 'joi';
 import { HttpException } from '../common';
 import bcrypt from 'bcrypt';
 import { pick } from 'lodash';
-import passport from 'passport';
 
 export class AuthService {
     private static instance: AuthService;
@@ -17,7 +16,7 @@ export class AuthService {
     }
 
      async login(email: string, password: string, res: Response) {
-        // Validate login data\
+        // Validate login data
         const { error } = AuthService.validate({ email, password });
         if (error) throw new HttpException(400, { error_code: '01', error_message: error.details[0].message });
 

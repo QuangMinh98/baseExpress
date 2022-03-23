@@ -1,8 +1,7 @@
 import { Response, Request, Router, NextFunction } from 'express';
 import { Controller } from '../../common';
 import { AuthService } from '../../services/auth.service';
-import passport from 'passport';
-require('../../middlewares/passports');
+import { fbTokenAuth, fbAuth,fbTokenAuthErrorHandler } from '../../middlewares/facebookAuth.middleware';
 
 export class AuthController implements Controller {
     private readonly baseUrl: string = '/login';
@@ -20,20 +19,13 @@ export class AuthController implements Controller {
 
     initRouter() {
         this._router.post(this.baseUrl, this.login);
+        this._router.get(this.baseUrl + '/facebook', fbAuth());
+        this._router.get(this.baseUrl + '/facebook/callback', fbAuth(), this.facebookLogin);
         this._router.post(
-            this.baseUrl + '/facebook',
-            passport.authenticate('facebook', { session: false }),
+            this.baseUrl + '/facebook/token',
+            fbTokenAuth(),
+            fbTokenAuthErrorHandler,
             this.facebookLogin
-        );
-        this._router.get(
-            this.baseUrl + '/facebook',
-            passport.authenticate('facebook', { session: false }),
-            this.facebookLogin
-        );
-        this._router.get(
-            '/facebook/callback',
-            passport.authenticate('facebook', { failureRedirect: '/failed' }),
-            this.facebookLoginCallback
         );
     }
 
@@ -57,9 +49,8 @@ export class AuthController implements Controller {
         }
     };
 
-    private facebookLoginCallback = async (req: Request, res: Response, next: NextFunction) => {
+    private googleLogin = (req: Request, res: Response, next: NextFunction) => {
         try {
-            res.redirect('/profile');
         } catch (err) {
             next(err);
         }
