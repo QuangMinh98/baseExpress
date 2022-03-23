@@ -11,7 +11,9 @@ export class Config {
             connectionString: process.env.CONNECTION_STRING,
             jwtKey: process.env.JWT_KEY,
             facebookClientId: process.env.FACEBOOK_CLIENT_ID,
-            facebookClientSecret: process.env.FACEBOOK_CLIENT_SECRET
+            facebookClientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+            googleClientId: process.env.GOOGLE_CLIENT_ID,
+            googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
         };
     }
 

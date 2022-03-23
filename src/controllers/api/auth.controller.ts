@@ -48,11 +48,4 @@ export class AuthController implements Controller {
             next(err);
         }
     };
-
-    private googleLogin = (req: Request, res: Response, next: NextFunction) => {
-        try {
-        } catch (err) {
-            next(err);
-        }
-    };
 }

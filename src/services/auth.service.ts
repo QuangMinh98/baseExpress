@@ -51,6 +51,22 @@ export class AuthService {
     }
 
     /**
+     * Function login data with Google
+     * @param {*} user
+     * @return
+     */
+     async googleLogin(user: any, res: Response) {
+        const loginGoogle = await User.findOne(user._id);
+        if (!loginGoogle) throw new HttpException(404, { error_code: '01', error_message: 'User not found' });
+
+        const token = user.generateToken();
+        const response = {
+            user:pick(user, ['email', 'name', 'authType'])
+        }
+        res.header('x-auth-token', token).send(response);
+    }
+
+    /**
      * Function to validate login info
      *
      * @param loginData login info
