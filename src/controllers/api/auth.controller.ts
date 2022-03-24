@@ -1,7 +1,8 @@
 import { Response, Request, Router, NextFunction } from 'express';
 import { Controller } from '../../common';
 import { AuthService } from '../../services/auth.service';
-import { fbTokenAuth, fbAuth,fbTokenAuthErrorHandler } from '../../middlewares/facebookAuth.middleware';
+import { fbTokenAuth, fbAuth, fbTokenAuthErrorHandler } from '../../middlewares/facebookAuth.middleware';
+import { ggAuth, ggTokenAuthErrorHandler } from '../../middlewares/googleAuth.middleware';
 
 export class AuthController implements Controller {
     private readonly baseUrl: string = '/login';
@@ -21,12 +22,11 @@ export class AuthController implements Controller {
         this._router.post(this.baseUrl, this.login);
         this._router.get(this.baseUrl + '/facebook', fbAuth());
         this._router.get(this.baseUrl + '/facebook/callback', fbAuth(), this.facebookLogin);
-        this._router.post(
-            this.baseUrl + '/facebook/token',
-            fbTokenAuth(),
-            fbTokenAuthErrorHandler,
-            this.facebookLogin
-        );
+        this._router.get(this.baseUrl + '/google', ggAuth());
+        this._router.get(this.baseUrl + '/google/callback', ggAuth(), function (req: Request, res: Response) {
+            res.send(req.user);
+        });
+        this._router.post(this.baseUrl + '/facebook/token', fbTokenAuth(), fbTokenAuthErrorHandler, this.facebookLogin);
     }
 
     private login = async (req: Request, res: Response, next: NextFunction) => {
