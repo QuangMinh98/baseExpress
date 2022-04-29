@@ -3,7 +3,7 @@ import { AppService } from '../../services/app.service';
 import { Controller } from '../../common';
 
 export class AppController implements Controller {
-    private readonly baseUrl: string = '/';
+    private readonly baseUrl: string = '/todos';
     private _router: Router;
     private readonly appService = AppService.getInstance();
 

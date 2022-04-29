@@ -11,7 +11,7 @@ export class AppService {
     }
 
     helloWorld() {
-        throw new HttpException(400, { error_code: '01', error_message: 'abc' });
+        //throw new HttpException(400, { error_code: '01', error_message: 'abc' });
         return { status: 'ok' };
     }
 }
